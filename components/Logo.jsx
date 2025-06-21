@@ -1,3 +1,4 @@
+// components/Logo.tsx
 'use client';
 import Image from "next/image";
 

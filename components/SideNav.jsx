@@ -1,3 +1,5 @@
+
+// components/SideNav.tsx
 'use client';
 import { CalendarCheck2, FileText, HelpCircle } from "lucide-react";
 import Link from "next/link";

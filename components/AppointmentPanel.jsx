@@ -1,3 +1,4 @@
+// components/AppointmentPanel.tsx
 'use client';
 import { ArrowRightCircle } from "lucide-react";
 import { motion } from "framer-motion";

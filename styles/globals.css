@@ -1,26 +1,51 @@
 @import "tailwindcss";
+/* =================================================================================
+ * 1️⃣  Global CSS — app/globals.css
+ *     All theme tokens and extra utilities live here so we can skip tailwind.config
+ =================================================================================*/
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*── Theme Tokens ───────────────────────────────────────────────────────────────*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Federal Foreign Office blue scale */
+  --primary-50:  #f0f6ff;
+  --primary-100: #d9e9ff;
+  --primary-200: #adccff;
+  --primary-300: #7fb0ff;
+  --primary-400: #5596ff;
+  --primary-500: #2a7cff;
+  --primary-600: #2a7cff; /* alias for convenience */
+  --primary-700: #005fe2;
+  --primary-800: #004ab2;
+  --primary-900: #003682;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/*── Scrollbar thin like screenshot ─────────────────────────────────────────────*/
+* {
+  scrollbar-width: thin;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/*── Custom Utility Classes (✅ no tailwind.config needed) ───────────────────────*/
+@layer utilities {
+  .bg-primary-50   { background-color: var(--primary-50); }
+  .bg-primary-600  { background-color: var(--primary-600); }
+  .bg-primary-700  { background-color: var(--primary-700); }
+  .bg-primary-800  { background-color: var(--primary-800); }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  .text-primary-200 { color: var(--primary-200); }
+  .text-primary-600 { color: var(--primary-600); }
+  .text-primary-800 { color: var(--primary-800); }
+
+  .border-primary-600 { border-color: var(--primary-600); }
+
+  /* Hover variants (need explicit selectors) */
+  .hover\:text-primary-600:hover { color: var(--primary-600); }
+  .hover\:bg-primary-50:hover    { background-color: var(--primary-50); }
+  .hover\:bg-primary-700:hover   { background-color: var(--primary-700); }
+
+  /* Card‑like shadow from screenshot */
+  .shadow-card { box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
 }
