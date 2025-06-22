@@ -7,7 +7,7 @@ export function Logo() {
     <div className="flex items-center space-x-2">
       {/* Placeholder eagle logo */}
       <Image
-        src="/placeholder-eagle.svg" // replace with real asset
+        src="/logo.svg" // replace with real asset
         alt="Federal Foreign Office logo"
         width={40}
         height={40}
