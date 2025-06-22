@@ -41,7 +41,7 @@ export function AppointmentPanel({ passportURL, admissionURL, initialReview = fa
           const data = await fetchData(user.email)
           console.log('Fetched data:', data)
           setUserData(data)
-          if (data) {
+          if (data.status === 'review') {
             setDisabled(true)
           }
         } catch (err) {
@@ -69,12 +69,7 @@ export function AppointmentPanel({ passportURL, admissionURL, initialReview = fa
       setLoading(false);
     }
   };
-
-  console.log('User data:', userData)
-  console.log('User status:', status)
-  console.log('User disabled:', disabled)
-
-
+  
   return (
     <motion.section
       initial={{ x: -30, opacity: 0 }}
