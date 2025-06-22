@@ -45,7 +45,7 @@ export function AppointmentPanel({
         const data = await fetchData(user.email);
         console.log("Fetched data:", data);
         setUserData(data);
-        if (data.status === "review") {
+        if (data?.status === "review") {
           setDisabled(true);
         }
       } catch (err) {

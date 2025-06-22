@@ -152,7 +152,7 @@ export default function Home() {
   if (loading) return <div className="flex h-screen items-center justify-center">Loading…</div>
 
   const status = userData?.status || '' // expected values: 'uploaded', 'under_review', etc.
-  const disabled = status !== 'uploaded'
+  const disabled = false; //( (status !== 'uploaded' && status !== undefined)? true: false)
 
   // ── Authenticated dashboard (original UI) ─────────────────────────────────
   return (
