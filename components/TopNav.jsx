@@ -49,9 +49,6 @@ export function TopNav() {
           {user ? (
             <>
               <SignOutButton className="text-sm text-primary-600 hover:underline" />
-              <span className="text-sm text-gray-700">
-                Logged in as <strong>{user.displayName}</strong>
-              </span>
             </>
           ) : (
             <SignInButton className="text-sm text-primary-600 hover:underline" />
