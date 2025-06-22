@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "@lib/context"; // assumes you have exported UserContext
 import { TopNav } from "@components/TopNav";
 import { SideNav } from "@components/SideNav";
@@ -9,7 +9,7 @@ import { FooterNav } from "@components/FooterNav";
 import SignInLanding from "@components/SignInLanding";
 import { X, CheckCircle } from "lucide-react";
 
-import { uploadFileToFirebase, uploadData } from "@lib/firebaseUtil"; // adjust the import path as needed
+import { uploadFileToFirebase, fetchData, uploadData } from "@lib/firebaseUtil"; // adjust the import path as needed
 
 function UploadDocumentsModal({ open, onClose, user }) {
 
@@ -32,7 +32,7 @@ function UploadDocumentsModal({ open, onClose, user }) {
     try {
       setLoading(true)
 
-      
+
       /* ⬇️  PARALLEL UPLOAD  ⬇️ */
       const [passportURL, admissionURL] = await Promise.all([
         uploadFileToFirebase(passportFile, `users/${user.email}/${passportFile.name}`),
@@ -48,7 +48,7 @@ function UploadDocumentsModal({ open, onClose, user }) {
         admissionURL,
         passportStatus: 'uploaded',
         admissionStatus: 'uploaded',
-        status:'uploaded'
+        status: 'uploaded'
       })
 
       //status:'uploaded' 'review' 'noreach' 'approved' 'rejected'
@@ -124,11 +124,35 @@ function UploadDocumentsModal({ open, onClose, user }) {
 export default function Home() {
   const { user } = useContext(UserContext);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [userData, setUserData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  // Fetch user‑specific data once authenticated
+  useEffect(() => {
+    if (!user) return
 
-  if (!user) {
-    // ── Public sign‑in splash ────────────────────────────────────────────────
-    return <SignInLanding />;
-  }
+    const load = async () => {
+      try {
+        const data = await fetchData(user.email)
+        console.log('Fetched data:', data)
+        setUserData(data)
+      } catch (err) {
+        console.error('Error fetching data:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    load()
+  }, [user])
+
+  // ── Public sign‑in splash ────────────────────────────────────────────────
+  if (!user) return <SignInLanding />
+
+  // ── Loading state while Firestore fetch completes ───────────────────────
+  if (loading) return <div className="flex h-screen items-center justify-center">Loading…</div>
+
+  const status = userData?.status || '' // expected values: 'uploaded', 'under_review', etc.
+  const disabled = status !== 'uploaded'
 
   // ── Authenticated dashboard (original UI) ─────────────────────────────────
   return (
@@ -152,19 +176,16 @@ export default function Home() {
                 <CheckCircle size={18} className="text-primary-600" />
                 <h4 className="font-semibold leading-tight">Your documents</h4>
               </div>
-              <p className="text-sm text-gray-600 flex-1 mb-4">Uploaded</p>
+              <p className="text-sm text-gray-600 flex-1 mb-4">Document pdf</p>
               <button
-                onClick={() => setShowUploadModal(true)}
-                className="border border-primary-600 text-primary-600 rounded-2xl font-medium py-2 mt-auto hover:bg-primary-50 transition-all"
+                onClick={() => !disabled && setShowUploadModal(true)}
+                disabled={disabled}
+                className={`border rounded-2xl font-medium py-2 mt-auto transition-all
+                  ${disabled ? 'border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed' : 'border-primary-600 text-primary-600 hover:bg-primary-50'}`}
               >
-                VIEW / UPLOAD DOCUMENTS
+                UPLOAD DOCUMENTS
               </button>
             </div>
-
-
-
-
-
 
           </div>
         </section>
