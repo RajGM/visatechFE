@@ -183,7 +183,7 @@ export default function Home() {
                 className={`border rounded-2xl font-medium py-2 mt-auto transition-all
                   ${disabled ? 'border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed' : 'border-primary-600 text-primary-600 hover:bg-primary-50'}`}
               >
-                UPLOAD DOCUMENTS
+                {disabled ? 'Uploaded' : 'Upload documents'}
               </button>
             </div>
 
